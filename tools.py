@@ -43,7 +43,7 @@ def get_tools(graph_memory_module: SceneGraphMemory):
     @tool
     def query_camera(camera_name: str, query: str)-> nx.Graph:
         """
-        Query the scene graph for a specific camera using a natural language query with a RAG on the scene graph triples.
+        Query the scene graph for a specific camera using keywords with a RAG on the scene graph triples.
         
         Args:
             camera_name (str): The name of the camera to query.
@@ -58,7 +58,7 @@ def get_tools(graph_memory_module: SceneGraphMemory):
     @tool
     def query_all_cameras(query: str)-> dict[str,nx.Graph]:
         """
-        Query all cameras using a natural language query with a RAG on the scene graph triples.
+        Query all cameras using keywords with a RAG on the scene graph triples.
         
         Args:
             query (str): The natural language query to execute.

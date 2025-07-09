@@ -82,18 +82,18 @@ class SmolAgentsModule(abstract.AbstractModule):
             else:
                 context_prompt = user_input
             
-                # Get agent response
-                
-                raw_response = self.agent.run(context_prompt)
-                clean_response = self._clean_response(raw_response)
-                self.logger.info(f"Response: '{clean_response}'")
-                
-                # Update conversation history
-                self.conversation_context.extend([
-                    f"User: {user_input}",
-                    f"Assistant: {clean_response}"
-                ])
-                
+            # Get agent response
+
+            raw_response = self.agent.run(context_prompt)
+            clean_response = self._clean_response(raw_response)
+            self.logger.info(f"Response: '{clean_response}'")
+
+            # Update conversation history
+            self.conversation_context.extend([
+                f"User: {user_input}",
+                f"Assistant: {clean_response}"
+            ])
+
             # Keep only last 16 exchanges (8 user + 8 assistant)
             if len(self.conversation_context) > 16:
                 self.conversation_context = self.conversation_context[-16:]
