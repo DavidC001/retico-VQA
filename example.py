@@ -9,6 +9,9 @@ import time
 
 from smolagents import CodeAgent, InferenceClientModel
 
+import dotenv
+dotenv.load_dotenv()
+
 from tools import get_tools, textualize_scene_graph
 
 webcam = WebcamModule(meta_data={"camera_name": "office"})
@@ -26,13 +29,17 @@ scene_graph.subscribe(scene_graph_drawing)
 scene_graph_drawing.subscribe(screen)
 scene_graph.subscribe(scene_graph_memory)
 
-network.run(webcam)
-
 # Initialize a model (using Hugging Face Inference API)
-model = InferenceClientModel()  # Uses a default model
+model = InferenceClientModel(
+    model_id="gpt-4.1-nano",
+    provider='openai',
+    api_key=os.getenv("OPENAI_API_KEY"),
+)  # Uses a default model
 
 # Create an agent with no tools
 agent = CodeAgent(tools=get_tools(scene_graph_memory)+[textualize_scene_graph], model=model)
+
+network.run(webcam)
 
 breakpoint()
 print("Stopping the network...")
