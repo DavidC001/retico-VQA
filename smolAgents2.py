@@ -22,6 +22,7 @@ class SmolAgentsModule(abstract.AbstractModule):
         self.lock = threading.Lock()
         self.logger = logging.getLogger(self.name())
         self.conversation_context = []
+        self.user_text_parts = []
     
     @staticmethod
     def name() -> str:
@@ -45,19 +46,31 @@ class SmolAgentsModule(abstract.AbstractModule):
             return
             
         # Extract text from all committed speech recognition IUs
-        user_text_parts = []
         source_iu = None
+        eou = False
+        
         
         for iu, update_type in update_message:
-            if (update_type == abstract.UpdateType.COMMIT and 
-                isinstance(iu, SpeechRecognitionIU)):
-                if iu.text and iu.text.strip():
-                    user_text_parts.append(iu.text.strip())
-                source_iu = iu  # Keep the last one as source
+            # print ("Reveived IU:", iu.text, "Update type:", update_type)
+            
+            if (update_type == abstract.UpdateType.ADD):
+                self.user_text_parts.append(iu.text.strip())
+            elif (update_type == abstract.UpdateType.REVOKE):
+                # If we revoke, we should not process this IU
+                text = iu.text.strip()
+                if text in self.user_text_parts:
+                    #remove the last occurrence
+                    self.user_text_parts.reverse()
+                    self.user_text_parts.remove(text)
+                    self.user_text_parts.reverse()
+                continue
+                    
+            source_iu = iu  # Keep the last one as source
+            eou = iu.final or eou or iu.committed
         
-        # Process if we have text and source
-        if user_text_parts and source_iu:
-            complete_text = " ".join(user_text_parts)
+        # Process if we have text and source and there is text to process
+        if eou and len(self.user_text_parts) > 0:
+            complete_text = " ".join(self.user_text_parts)
             self.logger.info(f"Processing: '{complete_text}'")
             
             # Start processing in separate thread
@@ -66,6 +79,8 @@ class SmolAgentsModule(abstract.AbstractModule):
                 args=(source_iu, complete_text), 
                 daemon=True
             ).start()
+            
+            self.user_text_parts = []  # Clear buffer after processing
     
 
     def _process_with_agent(self, source_iu: SpeechRecognitionIU, user_input: str) -> None:
