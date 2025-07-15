@@ -28,7 +28,7 @@ from tools import get_tools, textualize_scene_graph
 
 webcam = WebcamModule(meta_data={"camera_name": "office"})
 # webcam2 = IPCameraModule("http://173.165.152.129:8011/axis.-cgi/mjpg/video.cgi", meta_data={"camera_name": "garden"}, width=640, height=480)
-webcam3 = MistyCameraStreamModule("10.10.2.112", meta_data={"camera_name": "YOU (misty)"}, res_width=640, res_height=480)
+webcam3 = MistyCameraStreamModule(os.getenv("MISTY_IP"), meta_data={"camera_name": "YOU (misty)"}, res_width=640, res_height=480)
 webcam2 = IPCameraModule("http://10.10.1.91:8090/video", meta_data={"camera_name": "kitchen"}, width=640, height=480, username="admin", password="secret")
 screen = ScreenModule()
 screen2 = ScreenModule()
@@ -38,22 +38,16 @@ scene_graph = SceneGraphModule(topk=25, confidence_threshold=0.15, timeout=1)
 scene_graph_drawing = SceneGraphDrawingModule(camera_name="office")
 scene_graph_drawing2 = SceneGraphDrawingModule(camera_name="kitchen")
 scene_graph_drawing3 = SceneGraphDrawingModule(camera_name="YOU (misty)")
-scene_graph_memory = SceneGraphMemory(model_name="Qwen/Qwen3-Embedding-4B")
+scene_graph_memory = SceneGraphMemory(model_name="Qwen/Qwen3-Embedding-0.6B")
 
 microphone = MicrophoneModule(rate=16000)
 filter = RobotASRFilterModule()
 asr = WhisperASRModule(silence_dur=0.2)
 model = InferenceClientModel(
-    model_id="gpt-4.1-mini",
+    model_id="gpt-4o",
     provider="openai",
     api_key=os.getenv("OPENAI_KEY")
 )
-# model = OpenAIServerModel(# use ollama local server
-#     model_id="qwen3:0.6B",
-#     api_base="http://localhost:11434/v1",
-#     api_key=""
-# )
-
 agent = SmolAgentsModule(
     CodeAgent(
         tools=get_tools(scene_graph_memory)+[textualize_scene_graph],
@@ -61,7 +55,7 @@ agent = SmolAgentsModule(
     )
 )
 
-tts = MistyTTSModule("10.10.2.112")
+tts = MistyTTSModule(os.getenv("MISTY_IP"))
 # tts = GoogleTTSModule(
 #     language_code="en-US",
 #     voice_name="en-US-Standard-C",

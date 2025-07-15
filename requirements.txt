@@ -1,0 +1,4 @@
+git+https://github.com/retico-team/retico-core
+git+https://github.com/retico-team/retico-sceneGraph.git
+smollagent
+python-dotenv
