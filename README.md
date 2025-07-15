@@ -40,7 +40,7 @@ For specific modules like `retico-sceneGraph`, follow their respective README fi
 
 To use the script `main.py`, ensure you have the necessary environment variables set up. You can create a `.env` file in the root directory with the following content:
 ```
-OPENAI_KEY=your_openai_api_key
+OPENAI_API_KEY=your_openai_api_key
 MISTY_IP=your_misty_ip_address
 ```
 You will also need to have a misty robot running and accessible on the specified IP address. This version lacks a proper filter of the generated responses, so you may need to silence the microphone while the robot is speaking.
