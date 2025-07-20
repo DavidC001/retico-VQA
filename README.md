@@ -1,12 +1,23 @@
-# retico-VQA
 
+# retico-VQA
 ![Python](https://img.shields.io/badge/Python-3.10-blue)
 ![License](https://img.shields.io/badge/License-Apache%202.0-blue)
 
-## Overview
+<p align="center">
+  <img src="resources/icon.png" alt="retico-VQA logo" width="240"/>
+</p>
 
+
+## Overview
 `retico-VQA` is an example project designed for Visual Question Answering (VQA) tasks. 
 It integrates various modules for vision, speech, and text processing using the Retico framework, enabling seamless interaction between components for incremental dialogue systems. This project showcases how to build a simple VQA system that can process visual inputs, generate speech outputs, and handle real-time video streams.
+
+<p align="center">
+<a href="https://github.com/DavidC001/retico-VQA/blob/main/resources/EvoMusic_report.pdf"><img src="resources/report.png" width="250"/></a>
+</p>
+<p align="center">
+Click to download report
+</p>
 
 ## Features
 

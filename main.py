@@ -26,21 +26,20 @@ dotenv.load_dotenv()
 from tools import get_tools, textualize_scene_graph
 
 webcam = WebcamModule(meta_data={"camera_name": "office"})
-webcam2 = IPCameraModule("http://173.165.152.129:8011/axis.-cgi/mjpg/video.cgi", meta_data={"camera_name": "garden"}, width=640, height=480)
-# webcam3 = MistyCameraStreamModule(os.getenv("MISTY_IP"), meta_data={"camera_name": "YOU (misty)"}, res_width=640, res_height=480)
-# webcam2 = IPCameraModule("http://10.10.1.91:8090/video", meta_data={"camera_name": "kitchen"}, width=640, height=480, username="admin", password="secret")
+# webcam2 = IPCameraModule("http://renzo.dyndns.tv/mjpg/video.mjpg", meta_data={"camera_name": "garden"}, width=640, height=480)
+webcam2 = IPCameraModule("http://10.10.1.91:8090/video", meta_data={"camera_name": "kitchen"}, width=640, height=480, username="admin", password="secret")
+webcam3 = MistyCameraStreamModule(os.getenv("MISTY_IP"), meta_data={"camera_name": "YOU (misty)"}, res_width=640, res_height=480)
 screen = ScreenModule()
 screen2 = ScreenModule()
 screen3 = ScreenModule()
 
-scene_graph = SceneGraphModule(topk=25, confidence_threshold=0.15, timeout=1)
+scene_graph = SceneGraphModule(topk=25, confidence_threshold=0.15, timeout=0.2)
 scene_graph_drawing = SceneGraphDrawingModule(camera_name="office")
-scene_graph_drawing2 = SceneGraphDrawingModule(camera_name="garden")
+scene_graph_drawing2 = SceneGraphDrawingModule(camera_name="kitchen")
 scene_graph_drawing3 = SceneGraphDrawingModule(camera_name="YOU (misty)")
 scene_graph_memory = SceneGraphMemory(model_name="Qwen/Qwen3-Embedding-0.6B")
 
 microphone = MicrophoneModule(rate=16000)
-filter = RobotASRFilterModule()
 asr = WhisperASRModule(silence_dur=0.2)
 model = InferenceClientModel(
     model_id="gpt-4o",
@@ -69,7 +68,7 @@ debug = DebugModule()
 
 webcam.subscribe(scene_graph)
 webcam2.subscribe(scene_graph)
-# webcam3.subscribe(scene_graph)
+webcam3.subscribe(scene_graph)
 scene_graph.subscribe(scene_graph_drawing3)
 scene_graph.subscribe(scene_graph_drawing2)
 scene_graph.subscribe(scene_graph_drawing)
