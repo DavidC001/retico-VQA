@@ -19,7 +19,7 @@
 
 
 <p align="center">
-<a href="https://github.com/DavidC001/retico-VQA/blob/main/resources/EvoMusic_report.pdf"><img src="resources/report.png" width="250"/></a>
+<a href="https://github.com/DavidC001/retico-VQA/blob/main/resources/RETICO_Project_Report.pdf"><img src="resources/report.png" width="250"/></a>
 </p>
 <p align="center">
 Click to download report
